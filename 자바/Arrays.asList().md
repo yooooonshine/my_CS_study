@@ -1,0 +1,2 @@
+*  java.util.Arrays의 ArrayList 클래스는 remove(), add() 메소드를 제공하지 않고 `set()`, `get()`, `contains()`를 제공한다. 배열에 엘리먼트를 추가하거나 삭제할 수 없어서 **배열의 사이즈를 변경할 수 없다.**
+* 즉 기존의 배열(Arrays, 크기 변경 불가)를 ArrayList로 변환하기 위해 사용되는 함수이다.
