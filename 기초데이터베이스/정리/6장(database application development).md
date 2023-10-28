@@ -1,5 +1,5 @@
 
-* ## sql in application cod
+* ## sql in application code
 	* 자바나 c언어 안에서 sql문을 사용할 수있다.
 		* 두 가지 조건이 필요한다.
 			* sql문은 host variables(언어 안의 변수)를  접근가능해야 한다.

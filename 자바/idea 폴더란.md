@@ -1,0 +1,1 @@
+* IntelliJ ( 인텔리 J ) 라는 IDE 에서 사용하는 option 값을 저장하는 폴더입니다.
