@@ -45,14 +45,35 @@
 	* assertThat(result).containsExactly("1", "2");
 		* result가 1,2만 있는지
 	* assertThatThrownBy
+		* 예시
+		```java
+
+		    assertThatThrownBy(() -> input.charAt(input.length()).isInstanceOf(StringIndexOutOfBoundsException.class);
+		```
 		* 익셉션이 발생하는 케이스를 테스트할 때 사용
-		* isInstanceOf(a)
-			* 예상되는 예외를 a에 입력
-		* hasMessageContaining(a)
-			* 예외 메세지에 a가 포함되어 있는 지
+			* isInstanceOf(a)
+				* 예상되는 예외를 a에 입력
+			* hasMessageContaining(a)
+				* 예외 메세지에 a가 포함되어 있는 지
 			* 
 * 
 
 ## PrameterizedTest
+* ValueSource
+```java
+@ParameterizedTest 
+@ValueSource(strings = {"q", "qwerasdfzxcv", "qq23"}) void createUserException(String name){
+}
+```
+valueSource는 리터럴 값의 단일 배열을 지정할 수 있다. 매개 변수화 된 테스트 호출마다 단일 인수를 제공하는 데 사용
+`@ValueSource`는 다음 유형의 리터럴 값을 지원합니다.
+
+- `short`, `byte`, `int`, `long`, `float`, `double`, `char`, `boolean`,
+- `java.lang.String`, `java.lang.Class`
+`@ValueSource` 안에 `ints`, `strings` 등 원하는 타입을 적어준 뒤 리터럴 값을 넣어주면 됩니다.
+
+* Null 과 Empty Sources
+`@NullSource` `@EmptySource`를 사용하면 파라미터 값으로 null과 empty를 넣어줍니다.
+
 * csvsource
 ## AssertThat이란
