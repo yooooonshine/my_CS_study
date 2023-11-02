@@ -1,0 +1,1 @@
+* 테이블에 @GeneratedValue(strategy = GenerationType.IDENTITY)로 바꾸어 주었더니 해결되었다.

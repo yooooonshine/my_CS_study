@@ -47,7 +47,6 @@
 	* assertThatThrownBy
 		* 예시
 		```java
-
 		    assertThatThrownBy(() -> input.charAt(input.length()).isInstanceOf(StringIndexOutOfBoundsException.class);
 		```
 		* 익셉션이 발생하는 케이스를 테스트할 때 사용
@@ -55,8 +54,18 @@
 				* 예상되는 예외를 a에 입력
 			* hasMessageContaining(a)
 				* 예외 메세지에 a가 포함되어 있는 지
-			* 
-* 
+## 정상 작동하는 지 확인 하는 방법
+```java
+Assertions.assertThatCode(  
+        () -> Validator.randomNumberRange(randomNumber)  
+).doesNotThrowAnyException();
+```
+assertThatCode().doesNotThrowAnyException을 이용하면 예외가 안터졌을 때 테스트를 통과한다.
+
+## 출력문을 테스트 하고 싶을 때
+* system.setOut을 통해 콘솔 출력
+
+
 
 ## PrameterizedTest
 * ValueSource
@@ -76,4 +85,22 @@ valueSource는 리터럴 값의 단일 배열을 지정할 수 있다. 매개 �
 `@NullSource` `@EmptySource`를 사용하면 파라미터 값으로 null과 empty를 넣어줍니다.
 
 * csvsource
+만약 값과 그에 대한 결과값을 같이 파라미터로 주고 싶다면 csvSource를 사용하면 된다.
+CsvSource(value = "입력, 결과")등으로 사용하면 된다.
+```java
+@ParameterizedTest  
+@CsvSource(value = {"3,false","4,true","5,true"})  
+@DisplayName("4이상에만 이동할지 결정하는 지 테스트")  
+void 이동_결정_테스트(int randomNumber, boolean result) {
+Assertions.assertThat(Car.decideToMove(randomNumber)).isEqualTo(result);  
+}  
+```
 ## AssertThat이란
+
+## Give, When, Then 패턴
+* 각각 준비, 실행, 검증이다.
+* 
+
+
+## Mockito
+* 여러 논리가 섞인 메소드를 테스트할 때에 사용한다. 쉽게 말하자면 특정 메소드가 의존성을 가져, 여러 논리로 A라는 결과를 도출한다면, 우리는 의존성이 갖는 부분을 mock으로 만들어 내용을 무시하고 A라는 결과를 도출하게 만드는 것이다.
