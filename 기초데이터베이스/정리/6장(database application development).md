@@ -32,7 +32,7 @@ INSERT INTO sailors
 ## 내장형 sql의 ERROR  변수
 * SQLCODE
 	* 옛날에는 특정 에러를 가리키는 음수값들이 있었다.
-	* 예를 들어 -1 이면 io ERROR등 지정되어있다
+	* 예를 들어 -1 이면 io ERROR등 지정되어있다.
 * SQLSTATE
 	* 현재 주로 이 에러변수를 사용하고
 	* CHAR\[6]로 에러를 표현한다.
@@ -163,7 +163,76 @@ JDBC Driver는 이러한 jdbc호출 함수를 특정 DBMS에 맞는 함수 호�
 # JDBC에서 driver의 네가지 타입
 ---
 ## 타입 1.Bridge
+이는 jdbc와 odbc간에도 변환 가능하게 하는 것
+jdbc 함수 call을 odbc 함수 call로 바꿔주는 드라이버
+다만 이는 새로운 드라이버는 필요없지만, 새로운 layer가 생긴다.
 
 ## 타입 2. 비 java 드라이버를 통한 고유 API로 직접 변환
+즉 jdbc를 native API로 바꿔주는 드라이버
+성능은 좋지만 native API가 설치되어야 한다.
 ## 타입 3. 네트워크 브리지
+middleware server를 두어, jdbc 함수 콜을 middleware server에서 db call로 바꿔준다.
 ## 타입 4. java 드라이버를 통한 고유 API로 직접 변환
+java driver로 바로 native api로 변환
+
+
+# JDBC 연결
+---
+jdbc는 세션을 통해 데이터를 주고 받는다.
+세션은 connection object를 만드는 것으로 부터 시작된다.
+```java
+String url = "www.naver.com:3306";
+Connection con;
+try{
+	con = DriverManager.getConnection(url,id, password)
+} catch(SQLException e)
+```
+
+세가지 종류의 sql문이 있다.
+* statement: static, dynamic SQL
+* preparedStatement: semi-static SQL, 즉 형식은 하는데 실행중 값을 알때
+* callableStatement:stored procedures
+
+## preparedStatement
+```java
+String sql = "INSERT INTO Sailors VALUES(?,?)";
+PreparedStatement pstmt = con.prepareStatment(sql);
+pstmt.set(1, sid);
+pstmt.set(2, sname);
+
+int a = pstmt.executeUpdate();//이 리턴 값은 영향을 준 record 개수
+ResultSet a = pstmt.executeQuery();//이 리턴 값은 reserltSet 객체
+```
+여기서 ResultSet은 cursor와 유사하다.
+즉 a.next()로 가져온다. 없으면 false 리턴한다.
+
+## java의 에러
+
+모든 에러의 최상위 class는 Throwable 이며
+이를 상속받는 Error, RuntimeException, Exception이 존재한다.
+
+에러를 캐치 했을 때
+* getMessage()
+* getSQLState()
+* getErrorCode(): 이는 제조사
+* getNextException(): 예외가 여러개 터졌을 때 다음 예외를 가져온다.
+## Database Metadata
+데이터베이스 meta data 객체는 db 시스템에 대한 정보를 제공한다.
+```java
+DatabaseMetaData md = con.getMetaData();
+md.getDriverName()
+md.getDriverVersion()
+```
+
+# SQLJ, SQL_java
+이건 JDBC의 semi static query 모델이다.
+즉 모든 형식은 정해졌으나 값만 모를때
+```java
+#sql iterator Sailors(Int sid, String name, Int rating);
+Sailors sailors
+#sql sailors = {
+SELECT name, rating INTO :name, :rating
+FROM Sailors WHERE sid = :sid;
+}
+```
+이건 precompiler가 sqlj코드를 jdbc driver call로 바꿔주고, 이후 자바 컴파일러가 값을 넣어준다.
